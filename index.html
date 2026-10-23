@@ -3,35 +3,307 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#11183f">
+  <meta name="theme-color" content="#101010">
   <title>MORLA CAFÉ | Cabasho & Talo</title>
   <style>
-    :root { --navy:#11183f; --blue:#527bb9; --gold:#d7a13b; --ink:#20243a; --muted:#697084; --paper:#fff; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family:Arial,Helvetica,sans-serif; background:linear-gradient(140deg,#f4f6fb,#fff 55%,#f8f2e8); color:var(--ink); }
-    .wrap { width:min(720px,100%); margin:0 auto; padding:22px 16px 36px; }
-    .card { background:var(--paper); border:1px solid #e4e7ef; border-radius:24px; box-shadow:0 16px 44px rgba(17,24,63,.10); overflow:hidden; }
-    header { text-align:center; padding:28px 22px 20px; border-bottom:1px solid #edf0f6; }
-    .logo { width:min(230px,70%); height:auto; object-fit:contain; display:block; margin:0 auto 12px; }
-    .brand { color:var(--navy); letter-spacing:.20em; font-family:Georgia,serif; font-size:clamp(27px,6vw,42px); margin:0; }
-    .subtitle { color:var(--blue); font-weight:800; letter-spacing:.08em; margin:6px 0 0; }
-    .intro { background:#f7f8fc; padding:20px 24px; text-align:center; }
-    .intro h1 { margin:0 0 8px; color:var(--navy); font-size:clamp(22px,5vw,30px); }
-    .intro p { margin:0; line-height:1.6; color:#51596f; }
-    form { padding:24px; display:grid; gap:17px; }
-    label { display:block; font-weight:700; color:var(--navy); margin-bottom:8px; }
-    input,select,textarea { width:100%; border:1px solid #d7dce8; border-radius:12px; padding:13px 14px; font:inherit; background:#fff; color:var(--ink); outline:none; }
-    input:focus,select:focus,textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(82,123,185,.15); }
-    textarea { min-height:145px; resize:vertical; }
-    .hint { font-size:12px; color:var(--muted); margin-top:6px; }
-    .buttons { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:2px; }
-    button { border:0; border-radius:12px; padding:14px 12px; color:#fff; font-weight:800; font-size:15px; cursor:pointer; }
-    .wa { background:#188c54; } .mail { background:var(--navy); }
-    button:hover { filter:brightness(1.06); }
-    .privacy { font-size:12px; color:var(--muted); line-height:1.5; text-align:center; margin:0; }
-    footer { text-align:center; padding:0 24px 24px; color:var(--muted); font-size:12px; }
-    .notice { display:none; background:#fff6df; color:#674b10; border:1px solid #f1d58c; border-radius:10px; padding:12px; font-size:13px; line-height:1.5; }
-    @media(max-width:520px) { .buttons { grid-template-columns:1fr; } form { padding:20px; } }
+    :root {
+      --bg: #101010;
+      --bg-soft: #141414;
+      --panel: #1b1b1b;
+      --panel-alt: #212121;
+      --input: #181818;
+      --input-border: #2d2d2d;
+      --line: rgba(255,255,255,0.09);
+      --gold: #d6b36a;
+      --gold-strong: #f0d196;
+      --text: #ffffff;
+      --muted: #b8b8b8;
+      --muted-strong: #d7d7d7;
+      --shadow: rgba(0,0,0,0.38);
+      --success-bg: rgba(214,179,106,0.12);
+      --success-border: rgba(214,179,106,0.28);
+      --error-bg: rgba(255,105,105,0.08);
+      --error-border: rgba(255,127,127,0.22);
+      --focus: rgba(214, 179, 106, 0.32);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(214, 179, 106, 0.12), transparent 28%),
+        linear-gradient(135deg, #0c0c0c 0%, #121212 35%, #171717 100%);
+      color: var(--text);
+    }
+
+    .wrap {
+      width: min(760px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 30px 0 40px;
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(27,27,27,0.97), rgba(20,20,20,0.97));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: 0 22px 62px var(--shadow);
+      overflow: hidden;
+      animation: fadeUp 0.7s ease-out both;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(214,179,106,0.04), transparent 38%, rgba(255,255,255,0.02));
+      pointer-events: none;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 30px 24px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .logo {
+      width: min(220px, 72%);
+      height: auto;
+      display: block;
+      margin: 0 auto 14px;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.20));
+    }
+
+    .brand {
+      margin: 0;
+      color: var(--text);
+      letter-spacing: 0.22em;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 6vw, 46px);
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--gold);
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      font-size: 0.92rem;
+    }
+
+    .intro {
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(214,179,106,0.04), rgba(255,255,255,0.015));
+      padding: 22px 24px 18px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .intro h1 {
+      margin: 0 0 10px;
+      color: var(--text);
+      font-size: clamp(24px, 5vw, 32px);
+    }
+
+    .intro p {
+      margin: 0;
+      line-height: 1.7;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    form {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
+      padding: 26px 24px 20px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      color: var(--muted-strong);
+      font-size: 0.96rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--input-border);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font: inherit;
+      background: var(--input);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255,255,255,0.42);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .notice {
+      display: none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      line-height: 1.5;
+      font-size: 0.88rem;
+      border: 1px solid transparent;
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+    }
+
+    .notice.show {
+      display: block;
+    }
+
+    .notice.is-error {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: #ffd1d1;
+    }
+
+    .notice.is-success {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: #f0d59b;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 15px 14px;
+      font-weight: 800;
+      font-size: 0.96rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .wa {
+      background: linear-gradient(180deg, #2ec778, #1b9a5e);
+      color: #ffffff;
+      box-shadow: 0 10px 18px rgba(46, 199, 120, 0.22);
+    }
+
+    .mail {
+      background: linear-gradient(180deg, #d9b367, #bb9a4d);
+      color: #171717;
+      box-shadow: 0 10px 18px rgba(214,179,106,0.22);
+    }
+
+    .privacy {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 8px 24px 24px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 520px) {
+      .wrap {
+        width: min(100%, calc(100% - 18px));
+        padding-top: 18px;
+      }
+
+      form {
+        padding: 18px 16px 16px;
+      }
+
+      .buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy {
+        font-size: 11px;
+      }
+
+      footer {
+        padding-bottom: 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -42,16 +314,19 @@
         <p class="brand">MORLA</p>
         <p class="subtitle">CAFÉ</p>
       </header>
+
       <section class="intro">
         <h1>Cabasho ama Talo</h1>
         <p>Fadlan nala wadaag cabashadaada, taladaada ama mahadcelintaada. Fikirkaagu wuxuu naga caawinayaa inaan adeeggeenna horumarino.</p>
       </section>
+
       <form id="feedbackForm">
-        <div>
+        <div class="field">
           <label for="customerName">Magacaaga (ikhtiyaari)</label>
           <input id="customerName" name="customerName" type="text" placeholder="Geli magacaaga">
         </div>
-        <div>
+
+        <div class="field">
           <label for="kind">Nooca fariinta *</label>
           <select id="kind" name="kind" required>
             <option value="">Dooro nooca fariinta</option>
@@ -60,7 +335,8 @@
             <option>Mahadcelin</option>
           </select>
         </div>
-        <div>
+
+        <div class="field">
           <label for="category">Qaybta ay khusayso *</label>
           <select id="category" name="category" required>
             <option value="">Dooro qaybta</option>
@@ -73,25 +349,38 @@
             <option>Arrin kale</option>
           </select>
         </div>
-        <div>
+
+        <div class="field">
           <label for="details">Faahfaahinta fariinta *</label>
           <textarea id="details" name="details" required placeholder="Si faahfaahsan u sharax cabashadaada ama taladaada..."></textarea>
         </div>
-        <div id="notice" class="notice" role="status"></div>
+
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
         <div class="buttons">
           <button type="button" class="wa" id="sendWhatsApp">U dir WhatsApp</button>
           <button type="button" class="mail" id="sendEmail">U dir Email</button>
         </div>
+
         <p class="privacy">Markaad doorato WhatsApp ama Email, fariintaada ayaa diyaar kuu noqonaysa si aad u hubiso kadibna u dirto.</p>
       </form>
+
       <footer>Mahadsanid inaad dooratay MORLA CAFÉ.</footer>
     </section>
   </main>
+
   <script>
     const WHATSAPP_NUMBER = "252610362525";
     const EMAIL_ADDRESS = "lastkellar@gmail.com";
     const form = document.getElementById("feedbackForm");
     const notice = document.getElementById("notice");
+
+    function showNotice(message, type = "success") {
+      notice.textContent = message;
+      notice.classList.remove("is-error", "is-success");
+      notice.classList.add(type === "error" ? "is-error" : "is-success");
+      notice.classList.add("show");
+    }
 
     function getMessage() {
       if (!form.reportValidity()) return null;
@@ -99,24 +388,41 @@
       const kind = document.getElementById("kind").value;
       const category = document.getElementById("category").value;
       const details = document.getElementById("details").value.trim();
-      return `MORLA CAFÉ — Fariin Macmiil\n\nMagaca: ${name}\nNooca fariinta: ${kind}\nQaybta: ${category}\nFaahfaahinta:\n${details}`;
+
+      return [
+        "MORLA CAFÉ — Fariin Macmiil",
+        "",
+        `Magaca: ${name}`,
+        `Nooca fariinta: ${kind}`,
+        `Qaybta: ${category}`,
+        "Faahfaahinta:",
+        details
+      ].join("\n");
     }
 
     document.getElementById("sendWhatsApp").addEventListener("click", () => {
       const message = getMessage();
-      if (!message) return;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
-      notice.style.display = "block";
-      notice.textContent = "WhatsApp ayaa furmaya iyadoo fariinta la sii diyaariyey. Fadlan hubi fariinta kadibna taabo Send.";
+      if (!message) {
+        showNotice("Fadlan buuxi dhammaan qaybaha lagama maarmaanka ah.", "error");
+        return;
+      }
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank", "noopener");
+      showNotice("WhatsApp ayaa furmaya iyadoo fariinta la sii diyaariyey. Fadlan hubi fariinta kadibna taabo Send.", "success");
     });
 
     document.getElementById("sendEmail").addEventListener("click", () => {
       const message = getMessage();
-      if (!message) return;
-      const subject = encodeURIComponent("MORLA CAFÉ — Cabasho / Talo Macmiil");
-      window.location.href = `mailto:${EMAIL_ADDRESS}?subject=${subject}&body=${encodeURIComponent(message)}`;
-      notice.style.display = "block";
-      notice.textContent = "Email-ka ayaa la furayaa iyadoo fariinta la sii diyaariyey. Fadlan hubi fariinta kadibna dir.";
+      if (!message) {
+        showNotice("Fadlan buuxi dhammaan qaybaha lagama maarmaanka ah.", "error");
+        return;
+      }
+
+      const subject = encodeURIComponent("MORLA CAFÉ — Customer Feedback");
+      const body = encodeURIComponent(message);
+      window.location.href = `mailto:${EMAIL_ADDRESS}?subject=${subject}&body=${body}`;
+      showNotice("Email-ka ayaa la furayaa iyadoo fariinta la sii diyaariyey. Fadlan hubi fariinta kadibna dir.", "success");
     });
   </script>
 </body>
